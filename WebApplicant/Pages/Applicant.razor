@@ -1,0 +1,47 @@
+﻿@page "/Applicant"
+@using WebApplicant.Model
+@layout MainLayout
+@inject HttpClient http
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>Applicant Form</h3>
+<a href="addApplicant">Add Applicant</a>
+
+    <table class="card table ">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>CV</th>
+                <th>Application Letter</th>
+                <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ListApplicants)
+        {
+                <tr class="gridview">
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>@item.CV</td>
+                <td>@item.ApplicationLetter</td>
+                <td>@item.Reference</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+@code {
+    List<ApplicantGetDto> ListApplicants = new List<ApplicantGetDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        ListApplicants = await http.GetFromJsonAsync<List<ApplicantGetDto>>("/GetApplicant");
+    }
+}

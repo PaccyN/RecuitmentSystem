@@ -1,0 +1,45 @@
+﻿@page "/AddApplicant"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>AddApplicant</h3>
+<EditForm Model="ApplicantInfo" OnValidSubmit="insertApplicant">
+    <label>First Name</label>
+          <input type="text" placeholder="Enter first name" class="form-control" @bind-value="ApplicantInfo.FirstName" />
+        <label>Last Name</label>
+        <input type="text" placeholder="Enter Last Name" class="form-control" @bind-value="ApplicantInfo.LastName" />
+        <label>Phone</label>
+        <input type="text" placeholder="Enter Phone" class="form-control" @bind-value="ApplicantInfo.Phone" />
+        <label>Email</label>
+        <input type="text" placeholder="Enter Email" class="form-control" @bind-value="ApplicantInfo.Email" />
+        <label>Upload CV</label>
+        <input type="file" placeholder="Enter CV" class="form-control" @bind-value="ApplicantInfo.CV" />
+        <label>UpLoad Application Letter</label>
+        <input type="file" placeholder="Enter ApplicationLetter" class="form-control" @bind-value="ApplicantInfo.ApplicationLetter" />
+        <label>UpLoad Reference</label>
+        <input type="file" placeholder="Enter Reference" class="form-control" @bind-value="ApplicantInfo.Reference" />
+        <button type="submit" class="btn">Save</button>
+
+</EditForm>
+@code {
+    ApplicantInputDto ApplicantInfo = new ApplicantInputDto();
+
+    public async Task insertApplicant()
+    {
+        try
+        {
+            var result = await http.PostAsJsonAsync("/SaveApplicant", ApplicantInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Applicant");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
+</div>
