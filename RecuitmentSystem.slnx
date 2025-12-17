@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="APIApplicant/APIApplicant.csproj" />
+  <Project Path="APIJobVacancy/APIJobVacancy.csproj" Id="79062313-6606-4e90-b4f1-f4d6dc2945e7" />
   <Project Path="WebApplicant/WebApplicant.csproj" />
+  <Project Path="WebJobVacancy/WebJobVacancy.csproj" Id="9f20989a-2ae2-4c1a-8cdc-fc69cc3038b9" />
 </Solution>

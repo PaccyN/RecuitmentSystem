@@ -13,6 +13,7 @@ namespace APIApplicant.Entity
         {
             base.OnModelCreating(model);
             model.Entity<Applicant>();
+            model.Entity<JobVacancy>();
         }
     }
 }

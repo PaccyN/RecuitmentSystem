@@ -1,0 +1,42 @@
+﻿@page "/AddJobVacancy"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>AddJobVacancy</h3>
+    <EditForm Model="JobVacancyInfo" OnValidSubmit="insertJobVacancy">
+        <label>Position</label>
+        <input type="text" placeholder="Enter Position" class="form-control" @bind-value="JobVacancyInfo.IdPosition" />
+        <label>Number Of Position</label>
+        <input type="text" placeholder="Enter Number of Position" class="form-control" @bind-value="JobVacancyInfo.NumberOfPosition" />
+        <label>Description</label>
+        <input type="text" placeholder="Enter Description" class="form-control" @bind-value="JobVacancyInfo.Description" />
+        <label>Date From</label>
+        <input type="date" placeholder="Enter Date" class="form-control" @bind-value="JobVacancyInfo.DateFrom" />
+        <label>Date To</label>
+        <input type="date" placeholder="Enter Date" class="form-control" @bind-value="JobVacancyInfo.DateTo" />
+        <button type="submit" class="btn">Save</button>
+
+    </EditForm>
+@code {
+    JobVacancyInputDto JobVacancyInfo = new JobVacancyInputDto();
+
+    public async Task insertJobVacancy()
+    {
+        try
+        {
+            var result = await http.PostAsJsonAsync("/SaveJobVacancy", JobVacancyInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/JobVacancy");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+}
+</div>

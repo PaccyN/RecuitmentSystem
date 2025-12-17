@@ -38,11 +38,36 @@ app.MapPost("/SaveApplicant", (ApplicantInputDto std) =>
     context.SaveChanges();
     return Results.Ok("Save Successfully");
 });
+
+app.MapPost("/SaveJobVacancy", (JobVacancyInputDto std) =>
+{
+    DataContext context = new DataContext();
+    var vacancy = new JobVacancy();
+    vacancy.IdPosition = std.IdPosition;
+    vacancy.NumberOfPosition = std.NumberOfPosition;
+    vacancy.Description = std.Description;
+    vacancy.DateFrom = std.DateFrom;
+    vacancy.DateTo = std.DateTo;
+
+    context.Add(vacancy);
+    context.SaveChanges();
+    return Results.Ok("Save Successfully");
+});
 app.MapGet("/GetApplicant", () =>
 {
     DataContext context = new DataContext();
     var Applicants = context.Set<Applicant>().ToList();
     return Results.Ok(Applicants);
+
+
+});
+
+
+app.MapGet("/GetJobVacancy", () =>
+{
+    DataContext context = new DataContext();
+    var job = context.Set<JobVacancy>().ToList();
+    return Results.Ok(job);
 
 
 });
