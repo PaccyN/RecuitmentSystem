@@ -1,0 +1,62 @@
+﻿@page "/Interview"
+@using WebApplicant.Model
+@layout MainLayout
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>Interview</h3>
+    <a href="AddInterview">Add Interview</a>
+    
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Position</th>
+                    <th>InterviewDate</th>
+                    <th>TimeFrom</th>
+                    <th>TimeTo</th>
+                    <th>Status</th>
+                    <th>UserAdded</th>
+                    <th>DateAdded</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Listinterviews)
+                {
+                    <tr class="gridview">
+                        <td>@item.IdApplicant</td>
+                        <td>@item.IdPosition</td>
+                        <td>@item.InterviewDate</td>
+                        <td>@item.TimeFrom</td>
+                        <td>@item.TimeTo</td>
+                        <td>@item.IsActive</td>
+                        <td>@item.UserAdded</td>
+                        <td>@item.DateAdded</td>
+
+                        <button class="btn btn-warning btn-sm"
+                                @onclick="@(() => nav.NavigateTo("/EditInterview/" + item.Id))">
+                            Update
+                        </button>
+
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    List<InterviewGetInputDto> Listinterviews = new List<InterviewGetInputDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        Listinterviews = await http.GetFromJsonAsync<List<InterviewGetInputDto>>("/GetInterview");
+    }
+
+
+}

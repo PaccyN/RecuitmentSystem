@@ -1,0 +1,49 @@
+﻿@page "/Application"
+@using WebApplicant.Model
+@layout MainLayout
+@inject HttpClient http
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>Application</h3>
+<a href="AddApplication">Add Application</a>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>UserAdded</th>
+                    <th>DateAdded</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ListApplications)
+                {
+                    <tr class="gridview">
+                        <td>@item.IdApplicant</td>
+                        <td>@item.IsActive</td>
+                        <td>@item.Date</td>
+                        <td>@item.UserAdded</td>
+                        <td>@item.DateAdded</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+   </div>
+</div>
+
+@code {
+        List<ApplicationGetDto> ListApplications = new List<ApplicationGetDto>();
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        ListApplications = await http.GetFromJsonAsync<List<ApplicationGetDto>>("/GetApplication");
+    }
+
+}
+

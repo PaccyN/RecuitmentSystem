@@ -4,6 +4,7 @@ using APIApplicant.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIApplicant.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251217131423_Interview_migration")]
+    partial class Interview_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,6 +104,12 @@ namespace APIApplicant.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTo")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("IdApplicant")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -109,17 +118,8 @@ namespace APIApplicant.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly>("InterviewDate")
-                        .HasColumnType("date");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<TimeOnly>("TimeFrom")
-                        .HasColumnType("time");
-
-                    b.Property<TimeOnly>("TimeTo")
-                        .HasColumnType("time");
 
                     b.Property<string>("UserAdded")
                         .IsRequired()
@@ -127,7 +127,7 @@ namespace APIApplicant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Interviews");
+                    b.ToTable("Interview");
                 });
 
             modelBuilder.Entity("APIApplicant.Entity.JobVacancy", b =>
@@ -157,35 +157,6 @@ namespace APIApplicant.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("JobVacancy");
-                });
-
-            modelBuilder.Entity("APIApplicant.Entity.Offer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("IdApplicant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IdPosition")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Salary")
-                        .HasColumnType("real");
-
-                    b.Property<string>("UserAdded")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Offer");
                 });
 #pragma warning restore 612, 618
         }

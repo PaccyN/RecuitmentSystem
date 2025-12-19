@@ -1,0 +1,50 @@
+﻿@page "/EditInterview/{Id:int}"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+
+<h3>Edit Interview</h3>
+
+<EditForm Model="InterviewInfo" OnValidSubmit="UpdateInterview">
+    <label>Applicant Name</label>
+    <input class="form-control" @bind="InterviewInfo.IdApplicant" />
+
+    <label>Position Name</label>
+    <input class="form-control" @bind="InterviewInfo.IdPosition" />
+
+    <label>Interview Date</label>
+    <input type="date" class="form-control" @bind="InterviewInfo.InterviewDate" />
+
+    <label>Time From</label>
+    <input type="time" class="form-control" @bind="InterviewInfo.TimeFrom" />
+
+    <label>Time To</label>
+    <input type="time" class="form-control" @bind="InterviewInfo.TimeTo" />
+
+    <button class="btn">Update</button>
+    <button type="button" class="btn btn-secondary mt-2"@onclick="@(() => nav.NavigateTo("/Interview"))">Cancel</button>
+
+</EditForm>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    InterviewInputDto InterviewInfo = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        InterviewInfo = await http.GetFromJsonAsync<InterviewInputDto>(
+            $"/GetInterviewById/{Id}");
+    }
+
+    async Task UpdateInterview()
+    {
+        var response = await http.PutAsJsonAsync(
+            $"/UpdateInterview/{Id}", InterviewInfo);
+
+        if (response.IsSuccessStatusCode)
+        {
+            nav.NavigateTo("/Interview");
+        }
+    }
+}

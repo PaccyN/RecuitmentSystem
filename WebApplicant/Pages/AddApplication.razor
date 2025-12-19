@@ -1,0 +1,40 @@
+﻿@page "/AddApplication"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>AddApplication</h3>
+<EditForm Model="ApplicationInfo" OnValidSubmit="insertApplication">
+
+    <label>Applicant Name</label>
+        <input type="text" placeholder="Enter Applicant Name" class="form-control" @bind-value="ApplicationInfo.IdApplicant" />
+        <label>Date</label>
+        <input type="date" placeholder="Date" class="form-control" @bind-value="ApplicationInfo.Date" />
+       
+        <button type="submit" class="btn">Save</button>
+
+</EditForm>
+@code {
+        ApplicationInputDto ApplicationInfo = new ApplicationInputDto();
+
+    public async Task insertApplication()
+    {
+        try
+        {
+                var result = await http.PostAsJsonAsync("/SaveApplication", ApplicationInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Application");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
+
+}
+</div>

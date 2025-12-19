@@ -2,34 +2,38 @@
 @using WebApplicant.Model
 @layout MainLayout
 @inject HttpClient http
+<link href="css/Page.css" rel="stylesheet" />
 <div class="container-fluid mt-5">
 <h3>JobVacancy</h3>
     <a href="AddJobVacancy">Add Job Vacancy</a>
- <table class="card table ">
-        <thead>
-            <tr>
-                <th>IdPodition</th>
-                <th>NumberOfPosition</th>
-                <th>Description</th>
-                <th>DateFrom</th>
-                <th>DateTo</th>
-                
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Listjob)
-        {
-                <tr class="gridview">
-                <td>@item.IdPosition</td>
-                <td>@item.NumberOfPosition</td>
-                <td>@item.Description</td>
-                <td>@item.DateFrom</td>
-                <td>@item.DateTo</td>
-                
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                 
+                    <th>Position Name</th>
+                    <th>NumberOfPosition</th>
+                    <th>Description</th>
+                    <th>DateFrom</th>
+                    <th>DateTo</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Listjob)
+                {
+                    <tr class="gridview">
+                        <td>@item.IdPosition</td>
+                        <td>@item.NumberOfPosition</td>
+                        <td>@item.Description</td>
+                        <td>@item.DateFrom</td>
+                        <td>@item.DateTo</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+ </div>
 </div>
 @code {
     List<JobVacancyGetDto> Listjob = new List<JobVacancyGetDto>();

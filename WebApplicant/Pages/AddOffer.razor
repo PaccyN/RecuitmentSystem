@@ -1,0 +1,39 @@
+﻿@page "/AddOffer"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>AddOffer</h3>
+    <EditForm Model="OfferInfo" OnValidSubmit="insertOffer">
+
+        <label>Applicant Name</label>
+        <input type="text" placeholder="Enter Applicant Name" class="form-control" @bind-value="OfferInfo.IdApplicant" />
+        <label>Position Name</label>
+        <input type="text" placeholder="Enter Position Name" class="form-control" @bind-value="OfferInfo.IdPosition" />
+        <label>Salary</label>
+        <input type="number" placeholder="Enter Salary" class="form-control" @bind-value="OfferInfo.Salary" />
+        <button type="submit" class="btn">Save</button>
+
+    </EditForm>
+</div>
+@code {
+    OfferInputDto OfferInfo = new OfferInputDto();
+
+    public async Task insertOffer()
+    {
+        try
+        {
+            var result = await http.PostAsJsonAsync("/SaveOffer", OfferInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Offer");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+}
+}

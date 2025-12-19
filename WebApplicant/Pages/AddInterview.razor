@@ -1,0 +1,45 @@
+﻿@page "/AddInterview"
+@using WebApplicant.Model
+@inject HttpClient http
+@inject NavigationManager nav
+<link href="css/Page.css" rel="stylesheet" />
+<div class="container-fluid mt-5">
+<h3>AddInterview</h3>
+    <EditForm Model="InterviewInfo" OnValidSubmit="insertInterview">
+
+        <label>Applicant Name</label>
+        <input type="text" placeholder="Enter Applicant Name" class="form-control" @bind-value="InterviewInfo.IdApplicant" />
+        <label>Position Name</label>
+        <input type="text" placeholder="Enter Position Name" class="form-control" @bind-value="InterviewInfo.IdPosition" />
+        <label>Interview Date</label>
+        <input type="date" placeholder="Enter Interview Date" class="form-control" @bind-value="InterviewInfo.InterviewDate" />
+        <label>Time From</label>
+        <input type="time" placeholder="Enter Time From" class="form-control" @bind-value="InterviewInfo.TimeFrom" />
+        <label>Time To</label>
+        <input type="time" placeholder="Enter Time To" class="form-control" @bind-value="InterviewInfo.TimeTo" />
+
+        <button type="submit" class="btn">Save</button>
+       
+
+    </EditForm>
+</div>
+@code {
+    InterviewInputDto InterviewInfo = new InterviewInputDto();
+
+    public async Task insertInterview()
+    {
+        try
+        {
+            var result = await http.PostAsJsonAsync("/SaveInterview", InterviewInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Interview");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+}
+}

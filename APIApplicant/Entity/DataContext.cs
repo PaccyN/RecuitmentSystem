@@ -4,6 +4,7 @@ namespace APIApplicant.Entity
 {
     public class DataContext : DbContext
     {
+        public DbSet<Interview> Interviews { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder Builder)
         {
             base.OnConfiguring(Builder);
@@ -14,6 +15,9 @@ namespace APIApplicant.Entity
             base.OnModelCreating(model);
             model.Entity<Applicant>();
             model.Entity<JobVacancy>();
+            model.Entity<Application>();
+            model.Entity<Interview>();
+            model.Entity<Offer>();
         }
     }
 }
