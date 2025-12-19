@@ -16,6 +16,7 @@
                     <th>Date</th>
                     <th>UserAdded</th>
                     <th>DateAdded</th>
+                    <th>Action</th>
 
                 </tr>
             </thead>
@@ -28,6 +29,9 @@
                         <td>@item.Date</td>
                         <td>@item.UserAdded</td>
                         <td>@item.DateAdded</td>
+                        <td>
+                            <a href="edit-app/@item.Id">Edit</a>
+                        </td>
 
                     </tr>
                 }

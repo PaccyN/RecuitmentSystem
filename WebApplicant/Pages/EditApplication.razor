@@ -1,0 +1,74 @@
+﻿@page "/edit-app/{Id:guid}"
+@using WebApplicant.Model
+@layout MainLayout
+@inject HttpClient http
+@inject NavigationManager nav
+
+<div class="container-fluid mt-5">
+
+
+    <h3>EditApplication</h3>
+
+    <EditForm Model="editApplication" OnValidSubmit="EditAplication">
+        <label>ID</label>
+        <input type="text" placeholder="Applicant ID" class="form-control" @bind="editApplication.Id" />
+        <label>Applicant Name</label>
+        <input type="text" placeholder="Enter Applicant Name" class="form-control" @bind="editApplication.IdApplicant" />
+        <label>Date</label>
+        <input type="date" placeholder="Date" class="form-control" @bind="editApplication.Date" />
+        <button type="submit" class="btn">UPDATE</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id{ get; set; }
+
+    List<ApplicationGetDto> ListApplications = new List<ApplicationGetDto>();
+
+    EditApplicationDto editApplication = new EditApplicationDto();
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+
+            ListApplications = await http.GetFromJsonAsync<List<ApplicationGetDto>>("/GetApplication")
+            ?? new List<ApplicationGetDto>();
+
+            var found = ListApplications.FirstOrDefault(c => c.Id == Id);
+
+            if (found == null)
+            {
+                Console.WriteLine("There is not Data Associated with this ID");
+            }
+            else
+            {
+                editApplication.Id = found.Id;
+                editApplication.IdApplicant = found.IdApplicant;
+                editApplication.Date = found.Date;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+
+    public async Task EditAplication()
+    {
+        try
+        {
+            var result = await http.PutAsJsonAsync($"/EditApplication/{Id}", editApplication);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Application");
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
+
+}

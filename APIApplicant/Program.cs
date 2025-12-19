@@ -134,8 +134,7 @@ app.MapGet("/GetApplication", () =>
 app.MapGet("/GetInterview", () =>
 {
     DataContext context = new DataContext();
-    var interviews
-    = context.Set<Interview>().ToList();
+    var interviews= context.Set<Interview>().ToList();
     return Results.Ok(interviews);
 
 
@@ -170,9 +169,9 @@ app.MapDelete("/DeleteInterview/{Id:Guid}", (Guid Id) =>
 
 app.MapPut("/UpdateInterview/{Id:Guid}", (Guid Id, InterviewInputDto dto) =>
 {
-    using var context = new DataContext();
-
-    var interview = context.Interviews.FirstOrDefault(i => i.Id == Id);
+    DataContext context = new DataContext();
+    var inter = context.Set<Interview>().ToList();
+    var interview = inter.FirstOrDefault(i => i.Id == Id);
 
     if (interview == null)
     {
@@ -190,5 +189,19 @@ app.MapPut("/UpdateInterview/{Id:Guid}", (Guid Id, InterviewInputDto dto) =>
     return Results.Ok("Interview updated successfully");
 });
 
+app.MapPut("/EditApplication/{Id:Guid}", (Guid Id, ApplicationIputDto appdto) =>
+{
+    DataContext context = new DataContext();
+    var application = context.Set<Application>().ToList();
+    var found = application.FirstOrDefault(s => s.Id == Id);
+    if (found == null)
+    {
+        Console.WriteLine("There is not data with this Id");
+    }
+    found.IdApplicant = appdto.IdApplicant;
+    found.Date = appdto.Date;
+    context.SaveChanges();
+    return Results.Ok("Application Updated Succesfully");
 
+});
 app.Run();

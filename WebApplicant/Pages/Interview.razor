@@ -6,7 +6,7 @@
 <link href="css/Page.css" rel="stylesheet" />
 <div class="container-fluid mt-5">
 <h3>Interview</h3>
-    <a href="AddInterview">Add Interview</a>
+    
     
 
     <div class="table-card">
@@ -21,6 +21,7 @@
                     <th>Status</th>
                     <th>UserAdded</th>
                     <th>DateAdded</th>
+                    <th>Status</th>
 
                 </tr>
             </thead>
@@ -36,11 +37,9 @@
                         <td>@item.IsActive</td>
                         <td>@item.UserAdded</td>
                         <td>@item.DateAdded</td>
-
-                        <button class="btn btn-warning btn-sm"
-                                @onclick="@(() => nav.NavigateTo("/EditInterview/" + item.Id))">
-                            Update
-                        </button>
+                        <td>
+                            <a href="EditInterview/@item.Id">Update</a>
+                        </td>
 
                        
                     </tr>

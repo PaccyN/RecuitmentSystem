@@ -1,50 +1,82 @@
-﻿@page "/EditInterview/{Id:int}"
+﻿@page "/EditInterview/{Id:guid}"
 @using WebApplicant.Model
 @inject HttpClient http
 @inject NavigationManager nav
-
+<div class="container-fluid mt-5">
 <h3>Edit Interview</h3>
 
 <EditForm Model="InterviewInfo" OnValidSubmit="UpdateInterview">
     <label>Applicant Name</label>
-    <input class="form-control" @bind="InterviewInfo.IdApplicant" />
+    <input type="text" placeholder="Applicant ID" class="form-control" @bind="InterviewInfo.IdApplicant" />
 
     <label>Position Name</label>
-    <input class="form-control" @bind="InterviewInfo.IdPosition" />
+    <input type="text" placeholder="Position ID" class="form-control" @bind="InterviewInfo.IdPosition" />
 
     <label>Interview Date</label>
-    <input type="date" class="form-control" @bind="InterviewInfo.InterviewDate" />
+    <input type="date" placeholder="Date" class="form-control" @bind="InterviewInfo.InterviewDate" />
 
     <label>Time From</label>
-    <input type="time" class="form-control" @bind="InterviewInfo.TimeFrom" />
+    <input type="time" placeholder="TimeFrom" class="form-control" @bind="InterviewInfo.TimeFrom" />
 
     <label>Time To</label>
-    <input type="time" class="form-control" @bind="InterviewInfo.TimeTo" />
+    <input type="time" placeholder="TimeTo" class="form-control" @bind="InterviewInfo.TimeTo" />
 
     <button class="btn">Update</button>
-    <button type="button" class="btn btn-secondary mt-2"@onclick="@(() => nav.NavigateTo("/Interview"))">Cancel</button>
+  
 
 </EditForm>
-
+</div>
 @code {
-    [Parameter] public int Id { get; set; }
+    [Parameter]
+    public Guid Id { get; set; }
 
-    InterviewInputDto InterviewInfo = new();
+    List<InterviewGetInputDto> Listinterviews = new List<InterviewGetInputDto>();
 
-    protected override async Task OnInitializedAsync()
+    EditInterviewInputDto InterviewInfo = new EditInterviewInputDto();
+
+    protected async override Task OnInitializedAsync()
     {
-        InterviewInfo = await http.GetFromJsonAsync<InterviewInputDto>(
-            $"/GetInterviewById/{Id}");
+        try
+        {
+
+            Listinterviews = await http.GetFromJsonAsync<List<InterviewGetInputDto>>("/GetInterview")
+            ?? new List<InterviewGetInputDto>();
+
+            var found = Listinterviews.FirstOrDefault(c => c.Id == Id);
+
+            if (found == null)
+            {
+                Console.WriteLine("There is not Data Associated with this ID");
+            }
+            else
+            {
+                InterviewInfo.Id = found.Id;
+                InterviewInfo.IdApplicant = found.IdApplicant;
+                InterviewInfo.IdPosition = found.IdPosition;
+                InterviewInfo.InterviewDate = found.InterviewDate;
+                InterviewInfo.TimeFrom = found.TimeFrom;
+                InterviewInfo.TimeTo = found.TimeTo;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
-    async Task UpdateInterview()
+    public async Task UpdateInterview()
     {
-        var response = await http.PutAsJsonAsync(
-            $"/UpdateInterview/{Id}", InterviewInfo);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            nav.NavigateTo("/Interview");
+            var result = await http.PutAsJsonAsync($"UpdateInterview/{Id}", InterviewInfo);
+            if (result.IsSuccessStatusCode)
+            {
+                nav.NavigateTo("/Interview");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
         }
     }
 }
